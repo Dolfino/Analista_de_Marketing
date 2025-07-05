@@ -1,0 +1,365 @@
+%%%%%%%%%%%%%%%%%
+% This is an example CV created using altacv.cls (v1.4, 12 Apr 2021) written by
+% LianTze Lim (liantze@gmail.com), based on the
+% Cv created by BusinessInsider at http://www.businessinsider.my/a-sample-resume-for-marissa-mayer-2016-7/?r=US&IR=T
+%
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%%%%%%%%%%%%%%%
+
+%% Use the "normalphoto" option if you want a normal photo instead of cropped to a circle
+% \documentclass[10pt,a4paper,normalphoto]{altacv}
+
+\documentclass[10pt,a4paper,ragged2e,withhyper]{altacv}
+%% AltaCV uses the fontawesome5 and simpleicons packages.
+%% See http://texdoc.net/pkg/fontawesome5 and http://texdoc.net/pkg/simpleicons for full list of symbols.
+%
+% Change the page layout if you need to
+\geometry{left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm,columnsep=0.8cm}
+
+% The paracol package lets you typeset columns of text in parallel
+\usepackage{paracol}
+
+% Change the font if you want to, depending on whether
+% you're using pdflatex or xelatex/lualatex
+% WHEN COMPILING WITH XELATEX PLEASE USE
+% xelatex -shell-escape -output-driver="xdvipdfmx -z 0" sample.tex
+\iftutex
+% If using xelatex or lualatex:
+\setmainfont{Roboto Slab}
+\setsansfont{Lato}
+\renewcommand{\familydefault}{\sfdefault}
+\else
+% If using pdflatex:
+\usepackage[rm]{roboto}
+\usepackage[defaultsans]{lato}
+% \usepackage{sourcesanspro}
+\renewcommand{\familydefault}{\sfdefault}
+\fi
+
+% Defina as cores se quiser aqui
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\definecolor{LightGrey}{HTML}{666666}
+\definecolor{DarkPastelRed}{HTML}{450808}
+\definecolor{PastelRed}{HTML}{8F0D0D}
+\definecolor{GoldenEarth}{HTML}{E7D192}
+
+% Minha definição de cores
+\definecolor{Mulberry}{HTML}{72243D}
+\definecolor{VividPurple}{HTML}{3366CC}
+\definecolor{VividPurpleb}{HTML}{3E0097}
+% Minha definição de cores para rede sociais
+\definecolor{facebook} {HTML}{1877F2}
+\definecolor{instagram}{HTML}{E1306C}
+\definecolor{tiktok}   {HTML}{000000}
+\definecolor{linkedin}  {HTML}{0A66C2}
+\definecolor{pinterest} {HTML}{E60023}
+\definecolor{twitter}   {HTML}{1DA1F2}
+\definecolor{snapchat}  {HTML}{FFFC00}
+\definecolor{discord}   {HTML}{7289DA}
+% Minha definição de cores para comunicação
+\definecolor{whatsapp}{HTML}{25D366}
+\definecolor{telegram}{HTML}{0088CC}
+\definecolor{slack}{HTML}{4A154B}
+\definecolor{skype}{HTML}{00AFF0}
+\definecolor{sms}{HTML}{FF6E40}
+% Minha definição de cores para streaming
+\definecolor{youtube}{HTML}{FF0000}
+\definecolor{spotify}{HTML}{1DB954}
+\definecolor{vimeo}{HTML}{1AB7EA}
+% Minha definição de cores para desing
+\definecolor{figma}{HTML}{F24E1E}
+\definecolor{invision}{HTML}{FF3366}
+\definecolor{behance}{HTML}{1769FF}
+\definecolor{envira}{HTML}{6DBE45}
+% Minha definição de cores para sistema
+\definecolor{salesforce}{HTML}{1798C1}
+\definecolor{sass}{HTML}{CC6699}
+\definecolor{zendesk}{HTML}{78A300}
+\definecolor{jira}{HTML}{0052CC}
+\definecolor{atlassian}{HTML}{0052CC}
+\definecolor{mailchimp}{HTML}{FFE01B}
+% Minha definição de cores para front-end
+\definecolor{html5}{HTML}{E44D26}
+\definecolor{css3}{HTML}{1572B6}
+\definecolor{js}{HTML}{F7DF1E}
+\definecolor{bootstrap}{HTML}{7952B3}
+\definecolor{ux}{HTML}{00C1D4}
+% cores para front-end adicionais
+\definecolor{react}{HTML}{61DAFB}      % React
+\definecolor{angular}{HTML}{DD0031}    % Angular
+\definecolor{vue}{HTML}{4FC08D}        % Vue.js
+\definecolor{svelte}{HTML}{FF3E00}     % Svelte
+\definecolor{nextjs}{HTML}{000000}     % Next.js
+\definecolor{gatsby}{HTML}{663399}     % Gatsby
+\definecolor{tailwind}{HTML}{06B6D4}   % Tailwind CSS
+\definecolor{typescript}{HTML}{3178C6} % TypeScript
+\definecolor{webpack}{HTML}{8DD6F9}    % Webpack
+\definecolor{babel}{HTML}{F9DC3E}      % Babel
+\definecolor{jest}{HTML}{C21325}       % Jest
+\definecolor{cypress}{HTML}{04B38D}    % Cypress
+\definecolor{storybook}{HTML}{FF4785}  % Storybook
+\definecolor{graphql}{HTML}{E10098}    % GraphQL
+\definecolor{rest}{HTML}{6C7A89}       % REST APIs (cinza-azulado)
+% Minha definição de cores para back-end
+\definecolor{python}{HTML}{3776AB}
+\definecolor{node}{HTML}{339933}
+\definecolor{docker}{HTML}{2496ED}
+\definecolor{github}{HTML}{181717}
+\definecolor{markdown}{HTML}{083FA1}
+% Minha definição de cores para banco de dados
+\definecolor{postgresql}{HTML}{336791}
+\definecolor{mysql}{HTML}{00758F}
+% Minha definição de cores para site
+\definecolor{wordpress}{HTML}{21759B}
+\definecolor{wix}{HTML}{2D00F7}
+\definecolor{cpanel}{HTML}{EA5504}
+\definecolor{joomla}{HTML}{ED1C24}
+\definecolor{drupal}{HTML}{0C76AB}
+\definecolor{blogger}{HTML}{FB8F3D}
+% Minha definição de cores para nuvem
+\definecolor{aws}{HTML}{FF9900}
+\definecolor{server}{HTML}{999999}
+\definecolor{dropbox}{HTML}{0061FF}
+\definecolor{googledrive}{HTML}{4285F4}
+% Infraestrutura pública
+\definecolor{aws}{HTML}{FF9900}        % já definido
+\definecolor{azure}{HTML}{0078D4}      % Microsoft Azure
+\definecolor{gcp}{HTML}{4285F4}        % Google Cloud
+\definecolor{ibmcloud}{HTML}{054ADA}   % IBM Cloud (azul escuro)
+\definecolor{oraclecloud}{HTML}{F80000}% Oracle Cloud (vermelho)
+\definecolor{alibabacloud}{HTML}{FF6A00}% Alibaba Cloud (laranja)
+\definecolor{digitalocean}{HTML}{0080FF}% DigitalOcean (azul)
+\definecolor{heroku}{HTML}{6762A6}     % Heroku (roxo)
+\definecolor{cloudflare}{HTML}{F38020} % Cloudflare (laranja)
+\definecolor{openstack}{HTML}{00B1E1}  % OpenStack (azul claro)
+
+% Aplique as cores dos componentes de texto
+\colorlet{name}{black}
+%\colorlet{tagline}{PastelRed}
+%\colorlet{heading}{DarkPastelRed}
+%\colorlet{headingrule}{GoldenEarth}
+%\colorlet{subheading}{PastelRed}
+%\colorlet{accent}{PastelRed}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
+% My colours definition
+\colorlet{tagline}{DarkPastelRed}
+\colorlet{heading}{VividPurple}
+\colorlet{headingrule}{VividPurple}
+\colorlet{subheading}{VividPurple}
+\colorlet{accent}{VividPurple}
+
+% Change some fonts, if necessary
+\renewcommand{\namefont}{\Huge\rmfamily\bfseries}
+\renewcommand{\personalinfofont}{\footnotesize}
+\renewcommand{\cvsectionfont}{\large\rmfamily\bfseries}
+\renewcommand{\cvsubsectionfont}{\large\bfseries}
+
+
+% Change the bullets for itemize and rating marker
+% for \cvskill if you want to
+\renewcommand{\cvItemMarker}{{\small\textbullet}}
+\renewcommand{\cvRatingMarker}{\faCircle}
+% ...and the markers for the date/location for \cvevent
+% \renewcommand{\cvDateMarker}{\faCalendar*[regular]}
+% \renewcommand{\cvLocationMarker}{\faMapMarker*}
+
+
+% If your CV/résumé is in a language other than English,
+% then you probably want to change these so that when you
+% copy-paste from the PDF or run pdftotext, the location
+% and date marker icons for \cvevent will paste as correct
+% translations. For example Spanish:
+% \renewcommand{\locationname}{Ubicación}
+% \renewcommand{\datename}{Fecha}
+
+
+%% Use (and optionally edit if necessary) this .tex if you
+%% want to use an author-year reference style like APA(6)
+%% for your publication list
+% \input{pubs-authoryear.cfg}
+
+%% Use (and optionally edit if necessary) this .tex if you
+%% want an originally numerical reference style like IEEE
+%% for your publication list
+%\input{pubs-num.cfg}
+
+%% sample.bib contains your publications
+%\addbibresource{sample.bib}
+
+\usepackage[author={David N da Silva}]{pdfcomment}
+\usepackage{dashrule}  % no preâmbulo, já deve estar carregado
+\usepackage{multicol}
+% opcional: distância entre colunas
+\setlength{\columnsep}{1em}
+
+% No preâmbulo, depois de carregar altacv.cls:
+%\setlength{\smallskipamount}{2pt}
+\setlength{\medskipamount}{4pt}
+
+\makeatletter
+\renewcommand*{\divider}{%
+	\par
+	\vspace{-0.8em}% espaço acima
+	\noindent
+	\hfill
+	{\color{headingrule}% opcional: usa cor de headingrule
+	\hdashrule{\linewidth}{0.5pt}{1mm 1mm}}\par% risquinho tracejado de 2cm
+	\vspace{2pt}% espaço abaixo
+}
+\makeatother
+
+\begin{document}
+
+\Aoff
+\Bon
+\Con	
+
+\name{David Nascimento da Silva}
+\tagline{\input{Conteúdo/Profissões.tex}}
+%% You can add multiple photos on the left or right
+\photoR{3cm}{foto2.jpg}
+% \photoL{2cm}{Yacht_High,Suitcase_High}
+
+\personalinfo{%
+	\input{Conteúdo/Cabeçalho.tex}
+	\cvsubsection{RESUMO\hfill}
+	\input{Conteúdo/Resumo.tex}
+	%% You can add your own arbitrary detail with
+	%% \printinfo{symbol}{detail}[optional hyperlink prefix]
+	% \printinfo{\faPaw}{Hey ho!}[https://example.com/]
+	
+	%% Or you can declare your own field with
+	%% \NewInfoFiled{fieldname}{symbol}[optional hyperlink prefix] and use it:
+	% \NewInfoField{gitlab}{\faGitlab}[https://gitlab.com/]
+	% \gitlab{your_id}
+	%%
+	%% For services and platforms like Mastodon where there isn't a
+	%% straightforward relation between the user ID/nickname and the hyperlink,
+	%% you can use \printinfo directly e.g.
+	% \printinfo{\faMastodon}{@username@instace}[https://instance.url/@username]
+	%% But if you absolutely want to create new dedicated info fields for
+	%% such platforms, then use \NewInfoField* with a star:
+	% \NewInfoField*{mastodon}{\faMastodon}
+	%% then you can use \mastodon, with TWO arguments where the 2nd argument is
+	%% the full hyperlink.
+	% \mastodon{@username@instance}{https://instance.url/@username}
+}
+
+\makecvheader
+%% Depending on your tastes, you may want to make fonts of itemize environments slightly smaller
+\AtBeginEnvironment{itemize}{\small}
+
+%% Set the left/right column width ratio to 6:4.
+\columnratio{0.6}
+
+% Start a 2-column paracol. Both the left and right columns will automatically
+% break across pages if things get too long.
+\begin{paracol}{2}
+
+%------------------------------------------------------------------------------------------
+\cvsection{ \faGraduationCap ~FORMAÇÃO ACADÊMICA}
+\input{Conteúdo/Formação.tex}
+
+%------------------------------------------------------------------------------------------
+\cvsection{\faIdBadge[regular] EXPERIÊNCIA PROFISSIONAL}
+\input{Conteúdo/Experiência Profissional.tex}
+
+%------------------------------------------------------------------------------------------
+%\cvsection{\faLanguage ~IDIOMAS}
+%\input{Conteúdo/Idioma.tex}
+
+%------------------------------------------------------------------------------------------
+\newpage
+%------------------------------------------------------------------------------------------
+\cvsection{\faCertificate CERTIFICAÇÕES}
+\input{Conteúdo/Certificações.tex}
+
+%------------------------------------------------------------------------------------------
+\cvsection{\faUserCog ~CURSOS COMPLEMENTARES}
+\input{Conteúdo/Cursos.tex}
+  
+%------------------------------------------------------------------------------------------
+\cvsection{\faGlobeAmericas ~EXPERIÊNCIA INTERNACIONAL}
+\input{Conteúdo/Internacional.tex}
+	
+%------------------------------------------------------------------------------------------
+\cvsection{\faAddressBook[regula] COMPETÊNCIAS PESSOAL}
+\input{Conteúdo/Meu dia.tex}
+
+%------------------------------------------------------------------------------------------
+%\cvsection{Publications}
+%\input{Conteúdo/Publicações.tex}
+  
+%------------------------------------------------------------------------------------------
+%% Switch to the right column. This will now automatically move to the second
+%% page if the content is too long.
+\switchcolumn
+%------------------------------------------------------------------------------------------
+%\cvsection{Life Philosophy}
+\begin{quote}
+\input{Conteúdo/Mensagem.tex}
+\end{quote}
+
+%------------------------------------------------------------------------------------------
+\cvsection{\faAward HABILIDADES EXPERIÊNCIA}
+\input{Conteúdo/Habilidade e Experiência.tex}
+
+%------------------------------------------------------------------------------------------
+\cvsection{\faUserTie ~COMPETÊNCIAS PROFISSIONAL}
+\input{Conteúdo/Competência Profissional.tex}
+
+\cvsection{\faLanguage ~IDIOMAS}
+\input{Conteúdo/Idioma.tex}
+%------------------------------------------------------------------------------------------
+\cvsection{\faLaptop ~COMPETÊNCIAS EM SOFTWARE}
+\input{Conteúdo/Competência Software.tex}
+
+%------------------------------------------------------------------------------------------
+%\cvsection{\faCertificate CERTIFICAÇÕES}
+%\input{Conteúdo/Certificações.tex}
+
+%------------------------------------------------------------------------------------------
+%\cvsection{\faAddressBook[regula] COMPETÊNCIAS\\ \hspace{0.9cm} PESSOAL}
+%\input{Conteúdo/Competência Pessoal.tex}
+
+%------------------------------------------------------------------------------------------
+%\cvsection{\faGamepad ~HOBBIES}
+%\input{Conteúdo/Hobbie.tex}
+
+%------------------------------------------------------------------------------------------
+%\cvsection{\faMedal HONRA}
+%\input{Conteúdo/Honra.tex}
+
+%------------------------------------------------------------------------------------------
+%\cvsection{Referências}
+%\input{Conteúdo/Referência.tex}
+
+\end{paracol}
+
+%------------------------------------------------------------------------------------------
+% Start a 1-column paracol.
+\begin{paracol}{1}
+	\includegraphics[scale=0.95]{Carta Alloha.pdf}\\
+\end{paracol}
+
+%------------------------------------------------------------------------------------------
+% Start a 1-column paracol.
+\begin{paracol}{1}
+	\includegraphics[scale=0.95]{/home/dns/Downloads/Analista_de_Marketing/Conteúdo/Imagem/Carta de recomendaçãoF.pdf}\\
+\end{paracol}
+%------------------------------------------------------------------------------------------
+
+% use ONLY \newpage if you want to force a page break for
+% ONLY the currentc column
+%\newpage
+%% Set the left/right column width ratio to 1:0.
+%\columnratio{1.0}
+
+\end{document}
