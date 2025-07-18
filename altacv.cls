@@ -34,7 +34,10 @@
 
 %% v1.3: load hyperref for clickable hyperlinks
 \newif\if@withhyper
-\DeclareOption{withhyper}{\@withhypertrue}
+\DeclareOption{withhyper}{%
+  \@withhypertrue%
+  \AtEndOfPackage{\RequirePackage[pdftex]{hyperref}}%
+}
 \ProcessOptions\relax
 
 \LoadClass{article}
@@ -64,6 +67,13 @@
 \RequirePackage{scrlfile}
 \RequirePackage{xcolor}
 
+%---------------------------------------------------------------
+\usepackage{kantlipsum}   %% only for demo
+\usepackage{lmodern}
+\usepackage{marvosym}
+\usepackage{graphicx}
+\usepackage[pt-PT]{datetime2}
+\usepackage{environ}
 %----------------------------------
 
 % 1.7.3 For backward compatibility
@@ -84,7 +94,7 @@
 	\ifluatex\tutextrue\else\tutexfalse\fi
 	\fi
 }{}
-\iftutex 
+\iftutex
 \RequirePackage{fontspec}
 \else
 %% v1.3.2 attempts to make ligatures
@@ -113,26 +123,34 @@
 }
 \fi
 
-\colorlet{accent}{blue!70!black}
-\colorlet{emphasis}{black}
-\colorlet{heading}{black}
-\colorlet{headingrule}{black}
-\colorlet{subheading}{emphasis}
-\colorlet{body}{black!80!white}
-\colorlet{name}{heading}
-\colorlet{tagline}{accent}
+
 
 %-------Color Add----------------
+\definecolor{Graphite}{HTML}{4B4E53}
+\definecolor{LightGrey}{HTML}{666666}
 \definecolor{white}{RGB}{255,255,255}
 \definecolor{gray}{HTML}{4D4D4D}
 \definecolor{maingray}{HTML}{B9B9B9}
+\definecolor{blackened}{HTML}{2B2B2B}
 \definecolor{cvblue}{HTML}{0E5484}
+\definecolor{quote}{HTML}{4B4E53}
+
 \colorlet{maincolor}{cvblue}
 % profile section color (sidebar/left column)
 \colorlet{pseccolor}{maincolor!90}
 % color used for all icon arguments
 \colorlet{iconcolor}{maincolor!90}
 %--------------------------------
+
+\colorlet{accent}{blue!70!black}
+\colorlet{emphasis}{black}
+\colorlet{heading}{black}
+\colorlet{headingrule}{black}
+\colorlet{subheading}{emphasis}
+\colorlet{body}{LightGrey}
+\colorlet{resume}{Graphite}
+\colorlet{name}{heading}
+\colorlet{tagline}{accent}
 
 % Renamed or added v1.7
 \newcommand{\cvItemMarker}{{\small\textbullet}}
@@ -185,7 +203,7 @@
 %% v1.6: Use accsupp so that when copying/pasting the icon from PDF to a text
 %%       file, the icon name is pasted
 %% v1.7: Some tweaks/corrections so that accsupp is for icons only
-%% v1.7.1: Bugfix to support some symbol commands e.g. academicons commands 
+%% v1.7.1: Bugfix to support some symbol commands e.g. academicons commands
 \ExplSyntaxOn
 \NewDocumentCommand{\printinfo}{m m o}{%
 	\IfNoValueTF{#3}{%
@@ -317,18 +335,19 @@
 \newcommand{\taglinefont}{\large\bfseries}
 \newcommand{\personalinfofont}{\footnotesize\bfseries}
 \newcommand{\cvsectionfont}{\LARGE\bfseries}
+\newcommand{\cvsectionfontII}{\large\bfseries}
 \newcommand{\cvsubsectionfont}{\large\bfseries}
 %%-Final Tamanho Fontes -----------------------------
 
-%%-----Bloco criação cabeçalho----------------------- 
+%%-----Bloco criação cabeçalho-----------------------
 \newcommand{\makecvheader}{%
   \begingroup
     \altacv@left@photos\hfill%
     \begin{minipage}{\dimexpr\linewidth-\altacv@photos@width}%
     \raggedright%
-    {\namefont\color{name}\MakeUppercase{\@name}\par}
+    {\raggedleft\namefont\color{name}\MakeUppercase{\@name}\par}
     \medskip
-    {\taglinefont\color{tagline}\@tagline\par}
+    {\raggedleft\taglinefont\color{tagline}\@tagline\par}
     \medskip
     {\personalinfofont\@personalinfo\par}
     \end{minipage}\hfill%
@@ -336,7 +355,7 @@
   \endgroup\medskip
 }
 
-\renewenvironment{quote}{\color{accent}\itshape\large}{\par}
+\renewenvironment{quote}{\color{quote}\itshape\normalsize}{\par}
 %%-----Final Bloco criação cabeçalho-----------------
 
 %%-----Bloco criação seção---------------------------
@@ -344,16 +363,37 @@
   \bigskip%
   \ifstrequal{#1}{}{}{\marginpar{\vspace*{\dimexpr1pt-\baselineskip}\raggedright\input{#1}}}%
   {\color{heading}\cvsectionfont\MakeUppercase{#2}}\\[-1ex]%
-  {\color{headingrule}\rule{\linewidth}{2pt}\par}\medskip
+  {\color{headingrule}\rule{\linewidth}{1pt}\par}\medskip
+}
+
+% Novo comando para seção software
+\newcommand{\softwarecvsection}[2][]{%
+  \bigskip%
+  \ifstrequal{#1}{}{}{\marginpar{\vspace*{\dimexpr1pt-\baselineskip}\raggedright\input{#1}}}%
+  {\color{black!70}\cvsectionfontII{#2}}\\[1ex]%
+  %{\color{black!70}\rule{\linewidth}{0.5pt}\par}\medskip
 }
 %%-----FInal Bloco criação seção---------------------
+
+%%-----Bloco criação sub-seção RESUMO-----------------------
+\newcommand{\cvsubsectionresumo}[1]{%
+  \smallskip%
+  \noindent
+  \color{subheading}\cvsubsectionfont{#1}%
+  \hspace{1ex}%
+  \color{headingrule}\rule{0.85\linewidth}{0.5pt}%
+  \par\medskip
+  \color{resume}\footnotesize\sffamily\fontseries{m}\selectfont
+}
+%%-----Final Bloco criação sub-seção RESUMO-----------------
 
 %%-----Bloco criação sub-seção-----------------------
 \newcommand{\cvsubsection}[1]{%
   \smallskip%
+  \noindent
   {\color{subheading}\cvsubsectionfont{#1}\par}\medskip
 }
-%%-----Final Bloco criação sub-seção-----------------
+
 
 %%-----Bloco criação evento--------------------------
 % v1.1.4: fixes inconsistent font size
@@ -390,8 +430,8 @@
 		\vspace{1pt}%
 	}%
 	% linha de datas e localização (mantém \small para o ícone+texto)
-	\ifstrequal{#3}{}{}{{\small\makebox[0.5\linewidth][l]{\faCalendar~#3}}}%
-	\ifstrequal{#4}{}{}{{\small\makebox[0.5\linewidth][r]{\faMapMarker~#4}}}\par
+	\ifstrequal{#3}{}{}{{\footnotesize\makebox[0.5\linewidth][l]{\faCalendar~#3}}}%
+	\ifstrequal{#4}{}{}{{\footnotesize\makebox[0.5\linewidth][r]{\faMapMarker~#4}}}\par
 	% reduzimos o espaço após a localização
 	\vspace{2pt}\normalsize%
 }
@@ -431,18 +471,79 @@
 }
 %%-----Final Bloco criação tag------------------------
 
+%---------------------------------------------------------
+% Bloco criação de tag com categorias  (NÃO conflita com \cvtag)
+%---------------------------------------------------------
+% ➊  Pré-requisitos
+%     \usepackage{tikz}
+%---------------------------------------------------------
+
+% ➋ Defina estilos por categoria (cores meramente ilustrativas)
+\tikzset{
+  % --- já existentes ---
+  tag-growth/.style      ={draw=green!60!black ,fill=green!10},
+  tag-test/.style        ={draw=blue!60!black  ,fill=blue!10},
+  tag-auto/.style        ={draw=orange!70!black,fill=orange!15},
+  tag-bi/.style          ={draw=purple!65!black,fill=purple!10},
+  tag-eng/.style         ={draw=teal!65!black  ,fill=teal!10},
+  tag-comm/.style        ={draw=gray!60!black  ,fill=gray!10},
+  % --- novas (pedidas) ---
+  tag-analytics/.style   ={draw=cyan!60!black  ,fill=cyan!10},
+  tag-experimentacao/.style={draw=yellow!70!black,fill=yellow!10},
+  tag-nocode/.style      ={draw=brown!60!black ,fill=brown!10},
+  tag-mobile/.style      ={draw=lime!60!black  ,fill=lime!10},
+  tag-comunicacao/.style ={draw=magenta!60!black,fill=magenta!10},
+  % --- extras de marketing ---
+  tag-seo/.style         ={draw=red!60!black   ,fill=red!10},
+  tag-sem/.style         ={draw=violet!60!black,fill=violet!10},
+  tag-ads/.style         ={draw=blue!70!black  ,fill=blue!15},
+  tag-crm/.style         ={draw=orange!60!black,fill=orange!10},
+  tag-content/.style     ={draw=green!70!black ,fill=green!15},
+  tag-branding/.style    ={draw=purple!70!black,fill=purple!15},
+  tag-conversion/.style  ={draw=pink!60!black  ,fill=pink!10},
+  tag-social/.style      ={draw=teal!70!black  ,fill=teal!15},
+  tag-email/.style       ={draw=brown!70!black ,fill=brown!15},
+  tag-ux/.style          ={draw=gray!70!black  ,fill=gray!15},
+  % --- fallback ---
+  tag-default/.style     ={draw=body!30        ,fill=body!05}
+}
+
+% ➌ Novo comando   \cvtagcat[<categoria>]{<conteúdo>}
+%    • Mantém a sintaxe opcional da categoria
+%    • Deixa seu \cvtag original intacto
+\newcommand{\cvtagcat}[2][]{%
+  \tikz[baseline]\node[
+    anchor=base,
+    rounded corners,
+    inner xsep=1ex,
+    inner ysep=0.75ex,
+    font=\small,
+    tag-default,   % garante borda/padding padrão
+    tag-#1         % sobrepõe se houver categoria
+  ]{#2};%
+}
+
 %%-----Bloco criação skill----------------------------
 % v1.6: Use accsupp so that the actual numeric value is copied/pasted
 %       and also support 0.5, 1.5, 2.5, 3.5, 4.5
-\newcommand{\cvskill}[2]{%
-	\textcolor{emphasis}{\textbf{#1}}\hfill
-	\BeginAccSupp{method=plain,ActualText={#2}}
-	\foreach \x in {1,...,5}{%
-		\ifdimequal{\x pt - #2 pt}{0.5pt}%
-		{\clipbox*{0pt -0.25ex {.5\width} {\totalheight}}{\color{accent}\cvRatingMarker}%
-			\clipbox*{{.5\width} -0.25ex {\width} {\totalheight}}{\color{body!30}\cvRatingMarker}}
-		{\ifdimgreater{\x bp}{#2 bp}{\color{body!30}}{\color{accent}}\cvRatingMarker}%
-	}\EndAccSupp{}\par%
+\newcommand{\cvskill}[3]{% idioma, descrição, nível (0 a 5)
+  \textbf{\textcolor{emphasis}{#1}}%
+  \ifthenelse{\equal{#2}{}}{}{ {\scriptsize -- #2}}%
+  \hfill
+  \BeginAccSupp{method=plain,ActualText={#3}}
+  \foreach \x in {1,...,5}{%
+    \ifdimequal{\x pt - #3 pt}{0.5pt}{%
+      \tikz[baseline]{\draw[fill=accent!80!white,draw=none] (0,0) circle (3pt);}%
+    }{%
+      \ifdimgreater{\x bp}{#3 bp}{%
+        \tikz[baseline]{\draw[fill=gray!30,draw=none] (0,0) circle (4pt);}%
+      }{%
+        \tikz[baseline]{\draw[fill=accent,draw=none] (0,0) circle (4pt);}%
+      }%
+    }%
+    \hspace{0.5em}%
+  }%
+  \EndAccSupp\par
 }
 %%-----Final Bloco criação skill-----------------------
 
@@ -458,25 +559,25 @@
 		\global\let\totalnum=\pgfmathresult%
 	}%
 	\begin{tikzpicture}
-		
+
 		% Calculate the thickness and the middle line of the wheel
 		\pgfmathsetmacro{\wheelwidth}{\outerradius-\innerradius}
 		\pgfmathsetmacro{\midradius}{(\outerradius+\innerradius)/2}
 		\pgfmathsetmacro{\totalrot}{-90 + #1}
-		
+
 		% Rotate so we start from the top
 		\begin{scope}[rotate=\totalrot]
-			
+
 			% Loop through each value set. \cumnum keeps track of where we are in the wheel
 			\pgfmathsetmacro{\cumnum}{0}
 			\foreach \value/\width/\colour/\name in {#4} {
 				\pgfmathsetmacro{\newcumnum}{\cumnum + \value/\totalnum*360}
-				
+
 				% Calculate the percent value
 				\pgfmathsetmacro{\percentage}{\value/\totalnum*100}
 				% Calculate the mid angle of the colour segments to place the labels
 				\pgfmathsetmacro{\midangle}{-(\cumnum+\newcumnum)/2}
-				
+
 				% This is necessary for the labels to align nicely
 				\pgfmathparse{
 					(-\midangle>180?"west":"east")
@@ -485,11 +586,11 @@
 					(-\midangle>180?"flush left":"flush right")
 				} \edef\textalign{\pgfmathresult}
 				\pgfmathsetmacro\labelshiftdir{1-2*(-\midangle<180)}
-				
+
 				% Draw the color segments. Somehow, the \midrow units got lost, so we add 'pt' at the end. Not nice...
 				\filldraw[draw=white,fill=\colour] (-\cumnum:\outerradius) arc (-\cumnum:-(\newcumnum):\outerradius) --
 				(-\newcumnum:\innerradius) arc (-\newcumnum:-(\cumnum):\innerradius) -- cycle;
-				
+
 				% Draw the data labels
 				% v1.6: Use accsupp so that the numeric number is copied/pasted too
 				\draw  [*-,thin,emphasis] node [append after command={(\midangle:\midradius pt) -- (\midangle:\outerradius + 1ex) -- (\tikzlastnode)}] at (\midangle:\outerradius + 1ex) [xshift=\labelshiftdir*0.5cm,inner sep=1ex, outer sep=0pt, text width=\width,anchor=\textanchor,align=\textalign,font=\small,text=body]{\BeginAccSupp{method=pdfstringdef,ActualText={\name: \value}}\name\EndAccSupp{}};
@@ -580,7 +681,7 @@
 %	\draw [fill={rgb:red,1;green,2;blue,3}] (0,0) rectangle (.1,.5);
 %\end{tikzpicture}
 
-\newcommand\barskills[1]{ 
+\newcommand\barskills[1]{
 	\begin{tikzpicture}
 		\foreach [count=\i] \x/\y in {#1}{
 			\draw[fill=body!30,body!30, rounded corners=0.4em] (0,\i) rectangle (5,\i+0.3);
@@ -625,53 +726,316 @@
 \usepackage{scalerel,xparse}
 \NewDocumentCommand\emojismile{}{
 	\scalerel*{
-		\includegraphics{EmojiFolder/u1F60A.png}
+		\includegraphics{Conteúdo/EmojiFolder/u1F60A.png}
 	}{X}
 }
 \NewDocumentCommand\emojismiley{}{
-	\includegraphics[scale=0.05]{EmojiFolder/u1F60A.png}
+	\includegraphics[scale=0.05]{Conteúdo/EmojiFolder/u1F60A.png}
 }
 
 \NewDocumentCommand\holanda{}{
-	\includegraphics[scale=0.05]{EmojiFolder/u1F1F1_u1F1FA.png}
+	\includegraphics[scale=0.05]{Conteúdo/EmojiFolder/u1F1F1_u1F1FA.png}
 }
 \NewDocumentCommand\espanha{}{
-	\includegraphics[scale=0.05]{EmojiFolder/u1F1EA_u1F1F8.png}
+	\includegraphics[scale=0.05]{Conteúdo/EmojiFolder/u1F1EA_u1F1F8.png}
 }
 \NewDocumentCommand\brasil{}{
-	\includegraphics[scale=0.05]{EmojiFolder/u1F1E7_u1F1F7.png}
+	\includegraphics[scale=0.05]{Conteúdo/EmojiFolder/u1F1E7_u1F1F7.png}
 }
 \NewDocumentCommand\usa{}{
-	\includegraphics[scale=0.05]{EmojiFolder/u1F1FA_u1F1F8.png}
+	\includegraphics[scale=0.05]{Conteúdo/EmojiFolder/u1F1FA_u1F1F8.png}
 }
 \NewDocumentCommand\apontar{}{
-	\includegraphics[scale=0.05]{EmojiFolder/u1F90F.3.png}
+	\includegraphics[scale=0.05]{Conteúdo/EmojiFolder/u1F90F.3.png}
 }
 
-
-%---------------------------------------------------------------
-\usepackage{kantlipsum}   %% only for demo
-\usepackage{lmodern}
-\usepackage{marvosym}
-\usepackage{graphicx}
-\usepackage[pt-PT]{datetime2}
+%------------------------------------------------------------
 
 \pagestyle{empty}
 
+%------------------------------------------------------------
+
 \graphicspath{{/home/dns/Downloads/Analista_de_Marketing/Conteúdo/Imagem/}}
 
+%------------------------------------------------------------%
+% TESTE SEM CORES - substitua o bloco original por:
 
-%------------------------------------------------------------
 \NewEnviron{commentA}{}
-\newcommand\Aon{\RenewEnviron{commentA}{\color{red}\BODY}}
+\newcommand\Aon{\RenewEnviron{commentA}{\BODY}}
 \newcommand\Aoff{\RenewEnviron{commentA}{}}
+
 \NewEnviron{commentB}{}
-\newcommand\Bon{\RenewEnviron{commentB}{\color{blue}\BODY}}
+\newcommand\Bon{\RenewEnviron{commentB}{\BODY}}
 \newcommand\Boff{\RenewEnviron{commentB}{}}
+
 \NewEnviron{commentC}{}
-\newcommand\Con{\RenewEnviron{commentC}{\color{cyan}\BODY}}
+\newcommand\Con{\RenewEnviron{commentC}{\BODY}}
 \newcommand\Coff{\RenewEnviron{commentC}{}}
 
+\NewEnviron{commentD}{}
+\newcommand\Don{\RenewEnviron{commentD}{\BODY}}
+\newcommand\Doff{\RenewEnviron{commentD}{}}
+
+\NewEnviron{commentE}{}
+\newcommand\Eon{\RenewEnviron{commentE}{\BODY}}
+\newcommand\Eoff{\RenewEnviron{commentE}{}}
+
+\NewEnviron{commentF}{}
+\newcommand\Fon{\RenewEnviron{commentF}{\BODY}}
+\newcommand\Foff{\RenewEnviron{commentF}{}}
+
+\NewEnviron{commentG}{}
+\newcommand\Gon{\RenewEnviron{commentG}{\BODY}}
+\newcommand\Goff{\RenewEnviron{commentG}{}}
+
+\NewEnviron{commentH}{}
+\newcommand\Hon{\RenewEnviron{commentH}{\BODY}}
+\newcommand\Hoff{\RenewEnviron{commentH}{}}
+
+\NewEnviron{commentI}{}
+\newcommand\Ion{\RenewEnviron{commentI}{\BODY}}
+\newcommand\Ioff{\RenewEnviron{commentI}{}}
+
+%------------------------------------------------------------%
+\usepackage{ifthen}  % Adicione se não estiver presente
+
+% Ambiente para controlar qual profissão mostrar
+\NewEnviron{profissao}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual cabeçalho mostrar
+\NewEnviron{cabecalho}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual resumo mostrar
+\NewEnviron{resumo}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual formação mostrar
+\NewEnviron{formacao}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual experiência profissional mostrar
+\NewEnviron{profissional}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual mensagem mostrar
+\NewEnviron{mensagem}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual mensagem mostrar
+\NewEnviron{mensagens}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual habilidade mostrar
+\NewEnviron{habilidade}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual competência mostrar
+\NewEnviron{competencia}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual idioma mostrar
+\NewEnviron{idioma}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual certificações mostrar
+\NewEnviron{certificado}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual cursos mostrar
+\NewEnviron{curso}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual internacional mostrar
+\NewEnviron{internacional}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual meu dia mostrar
+\NewEnviron{meu}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual software dia mostrar
+\NewEnviron{software}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual carta de apresentação mostrar
+\NewEnviron{carta}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
+% Ambiente para controlar qual competência pessoal mostrar
+\NewEnviron{pessoal}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
 
 \RenewDocumentCommand{\cvtag}{O{body}m}{%
 	\tikz[baseline]\node[
@@ -684,3 +1048,33 @@
 	% <!-- note que NÃO há 'fill' aqui -->
 	]{#2};%
 }
+
+\newcommand{\cvitemize}[1]{%
+  \begin{list}{\labelitemi}{%
+    \setlength{\leftmargin}{1em}%
+    \setlength{\itemsep}{0.3em}%
+    \setlength{\topsep}{0.3em}%
+    \setlength{\parsep}{0pt}%
+    \setlength{\partopsep}{0pt}%
+  }%
+  {\footnotesize #1}%
+  \end{list}%
+}
+
+\newcommand{\cviconitemize}[1]{%
+  \begin{itemize}[nosep,
+    labelwidth=1.8em,
+    labelsep=0.5em,
+    leftmargin=!,
+    itemsep=3pt,
+    topsep=0pt,
+    parsep=0pt,
+    partopsep=0pt,
+    before=\footnotesize,
+    font=\footnotesize
+  ]
+  #1
+  \end{itemize}
+}
+
+\newcommand{\faicon}[1]{{\fontsize{7}{7}\selectfont#1}}
