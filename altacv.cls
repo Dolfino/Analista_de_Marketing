@@ -1037,6 +1037,20 @@
     \BODY
 }
 
+% Ambiente para controlar qual competência pessoal mostrar
+\NewEnviron{freelance}[1]{%
+    \ifthenelse{\equal{#1}{A}}{\Aon\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{B}}{\Aoff\Bon\Coff\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{C}}{\Aoff\Boff\Con\Doff\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{D}}{\Aoff\Boff\Coff\Don\Eoff\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{E}}{\Aoff\Boff\Coff\Doff\Eon\Foff\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{F}}{\Aoff\Boff\Coff\Doff\Eoff\Fon\Goff\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{G}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Gon\Hoff\Ioff}{}%
+    \ifthenelse{\equal{#1}{H}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hon\Ioff}{}%
+    \ifthenelse{\equal{#1}{I}}{\Aoff\Boff\Coff\Doff\Eoff\Foff\Goff\Hoff\Ion}{}%
+    \BODY
+}
+
 \RenewDocumentCommand{\cvtag}{O{body}m}{%
 	\tikz[baseline]\node[
 	anchor=base,

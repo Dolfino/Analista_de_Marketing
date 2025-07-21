@@ -1722,6 +1722,10 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/lato/TS1lato-TLF.fd
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/typoland/lato/Lato-Regular-TS1-TLF.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/fontawesome5/fa5brands1.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/fontawesome5/fa5free1regular.tfm
+INPUT ./Conteúdo/Experiência Freelance.tex
+INPUT Conteúdo/Experiência Freelance.tex
+INPUT ./Conteúdo/Experiência Freelance.tex
+INPUT Conteúdo/Experiência Freelance.tex
 INPUT ./Conteúdo/12-Internacional.tex
 INPUT Conteúdo/12-Internacional.tex
 INPUT ./Conteúdo/12-Internacional.tex
@@ -1733,8 +1737,6 @@ INPUT Conteúdo/10-Certificações.tex
 INPUT ./Conteúdo/10-Certificações.tex
 INPUT Conteúdo/10-Certificações.tex
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/fontawesome5/fa5brands0.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/fontawesome5/fa5brands1.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/fontawesome5/fa5free1regular.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/fontawesome5/fa5free3solid.tfm
 INPUT ./Conteúdo/11-Cursos.tex
 INPUT Conteúdo/11-Cursos.tex
